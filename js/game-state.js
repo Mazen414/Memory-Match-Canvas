@@ -55,3 +55,37 @@ function createBoard() {
     y: 0
   }));
 }
+function startTimer() {
+  timer = setInterval(() => {
+    if (gameState === 'PLAYING') {
+      timeLeft--;
+      
+      if (showBonusText && bonusTextTimer > 0) bonusTextTimer--;
+      if (showBonusText && bonusTextTimer <= 0) showBonusText = false;
+      if (gameMessageTimer > 0) gameMessageTimer--;
+      if (gameMessageTimer <= 0) gameMessage = "";
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        endGame(false);
+      }
+    }
+  }, 1000);
+}
+
+function handleCardClick(card) {
+  if (lockBoard) return;
+  if (card.isFlipped || card.isMatched) return;
+  if (card === firstCard) return;
+
+  card.isFlipped = true;
+
+  if (!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  secondCard = card;
+  moves++;
+  checkMatch();
+}
