@@ -39,3 +39,19 @@ function loadLevel() {
   createBoard();
   startTimer();
 }
+// Programmatic Card Array State Factory
+function createBoard() {
+  const selectedIcons = icons.slice(0, totalPairs);
+  let cardSymbols = [...selectedIcons, ...selectedIcons];
+  cardSymbols = shuffle(cardSymbols);
+
+  cardsArray = cardSymbols.map((icon, index) => ({
+    id: index,
+    icon: icon,
+    isFlipped: false,
+    isMatched: false,
+    animProgress: 0,
+    x: 0,
+    y: 0
+  }));
+}
