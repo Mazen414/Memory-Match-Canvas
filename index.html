@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Match Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #gameCanvas {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="gameCanvas" width="900" height="650"></canvas>
+
+  <script src="js/data.js"></script>
+  <script src="js/id-generator.js"></script>
+  <script src="js/shuffle-engine.js"></script>
+  <script src="js/ui-regions.js"></script>
+  <script src="js/canvas-renderer.js"></script>
+  <script src="js/game-state.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
