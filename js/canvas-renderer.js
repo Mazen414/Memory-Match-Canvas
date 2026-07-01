@@ -135,7 +135,7 @@ class CanvasRenderer {
     this.ctx.font = 'bold 16px Arial';
     this.ctx.fillText(label, reg.x + reg.w/2, reg.y + 82);
   }
-  
+
 drawGameScreen() {
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
     this.ctx.beginPath();
@@ -181,5 +181,47 @@ drawGameScreen() {
       this.ctx.fillText(gameMessage, 450, 600);
     }
   }
+  
+  drawAnimatedCard(card) {
+    const targetProgress = (card.isFlipped || card.isMatched) ? 1 : 0;
+    card.animProgress += (targetProgress - card.animProgress) * 0.15;
+    let scaleX = Math.cos(card.animProgress * Math.PI);
+    
+    this.ctx.save();
+    const centerX = card.x + this.cardWidth / 2;
+    const centerY = card.y + this.cardHeight / 2;
+    
+    this.ctx.translate(centerX, centerY);
+    this.ctx.scale(Math.abs(scaleX), 1);
+    this.ctx.translate(-centerX, -centerY);
 
+    if (card.animProgress > 0.5) {
+      this.ctx.fillStyle = card.isMatched ? '#9cff9c' : '#ffffff';
+      this.ctx.beginPath();
+      this.ctx.roundRect(card.x, card.y, this.cardWidth, this.cardHeight, 15);
+      this.ctx.fill();
+
+      this.ctx.fillStyle = '#222';
+      this.ctx.font = '42px Arial';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText(card.icon, card.x + this.cardWidth / 2, card.y + this.cardHeight / 2);
+    } else {
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.beginPath();
+      this.ctx.roundRect(card.x, card.y, this.cardWidth, this.cardHeight, 15);
+      this.ctx.fill();
+
+      if (this.logoImg.complete) {
+        const size = Math.min(this.cardWidth, this.cardHeight) * 0.82;
+        const imgX = card.x + (this.cardWidth - size) / 2;
+        const imgY = card.y + (this.cardHeight - size) / 2;
+        this.ctx.drawImage(this.logoImg, imgX, imgY, size, size);
+      }
+      this.ctx.strokeStyle = '#0b5596';
+      this.ctx.lineWidth = 3;
+      this.ctx.stroke();
+    }
+    this.ctx.restore();
+  }
 }
