@@ -89,3 +89,57 @@ function handleCardClick(card) {
   moves++;
   checkMatch();
 }
+function checkMatch() {
+  const isMatch = firstCard.icon === secondCard.icon;
+  if (isMatch) {
+    firstCard.isMatched = true;
+    secondCard.isMatched = true;
+    score += 10 * level; // Evolving score calculation [cite: 45]
+    matchedPairs++;
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+    if (matchedPairs === totalPairs) levelCompleted();
+  } else {
+    lockBoard = true;
+    setTimeout(() => {
+      firstCard.isFlipped = false;
+      secondCard.isFlipped = false;
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    }, 800);
+  }
+}
+
+function levelCompleted() {
+  if (level >= 6) {
+    endGame(true);
+  } else {
+    gameMessage = "Level Completed! Moving to next level...";
+    gameMessageTimer = 2;
+    level++;
+    lockBoard = true;
+    setTimeout(() => { loadLevel(); }, 1500);
+  }
+}
+
+function endGame(won) {
+  clearInterval(timer);
+  gameState = 'END_SCREEN';
+
+  const record = {
+    name: playerName,
+    id: playerId,
+    score: score,
+    level: level,
+    moves: moves,
+    result: won ? "Won" : "Lost",
+    date: new Date().toLocaleString()
+  };
+
+  leaderboard.push(record);
+  leaderboard.sort((a, b) => b.score - a.score || b.level - a.level || a.moves - b.moves);
+  leaderboard = leaderboard.slice(0, 10);
+  localStorage.setItem("memoryGameLeaderboard", JSON.stringify(leaderboard));
+}
