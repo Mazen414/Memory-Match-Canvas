@@ -135,4 +135,51 @@ class CanvasRenderer {
     this.ctx.font = 'bold 16px Arial';
     this.ctx.fillText(label, reg.x + reg.w/2, reg.y + 82);
   }
+  
+drawGameScreen() {
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+    this.ctx.beginPath();
+    this.ctx.roundRect(50, 10, 800, 42, 15);
+    this.ctx.fill();
+
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = 'bold 18px Arial';
+    this.ctx.textAlign = 'left';
+    this.ctx.fillText(`Level: ${level}`, 75, 36);
+    this.ctx.fillText(`Score: ${score}`, 200, 36);
+    
+    this.ctx.textAlign = 'right';
+    this.ctx.fillText(`Moves: ${moves}`, 710, 36);
+    this.ctx.fillText(`Time: ${timeLeft}s`, 825, 36);
+
+    if (showBonusText) {
+      this.ctx.fillStyle = '#00ff88';
+      this.ctx.font = 'bold 18px Arial';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillText('+5', 835, 36 - (12 - bonusTextTimer/5));
+    }
+
+    this.drawRectButton('+5 Seconds', uiRegions.timeHelperBtn, extraTimeUsed ? '#888888' : '#ffcc00', '#222', 15, extraTimeUsed);
+
+    const cols = 4;
+    const gridWidth = (cols * this.cardWidth) + ((cols - 1) * this.padding);
+    const startX = (this.canvas.width - gridWidth) / 2;
+    const startY = 85;
+
+    cardsArray.forEach((card, index) => {
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      card.x = startX + col * (this.cardWidth + this.padding);
+      card.y = startY + row * (this.cardHeight + this.padding);
+      this.drawAnimatedCard(card);
+    });
+
+    if (gameMessage && gameMessageTimer > 0) {
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.font = 'bold 24px Arial';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText(gameMessage, 450, 600);
+    }
+  }
+
 }
